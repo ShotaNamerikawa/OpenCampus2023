@@ -31,4 +31,4 @@ mainブランチを保護するために直接pushを行えない設定にして
 
 ### プルリクエストについて
 ある程度コードができたら適宜プルリクエストを出して自分のブランチをmainにマージするようにしてください。以下にやり方を説明します。
-Codeのページで"Compare and Pull request"のボタンを押すと違うページに移るのでそこのcreate pull requestを押してください。さらに違うページに移るのでそのページの緑色のmergeを押しconfirmを押してください。プルリクエストが承認されます。branchはdeleteしないようにしてください。
+Codeのページで"Compare and Pull request"のボタンを押すと違うページに移るのでそこのcreate pull requestを押してください。さらに違うページに移るのでそのページの緑色のmerge pull requestを押しconfirm mergeを押してください。プルリクエストが承認されます。branchはdeleteしないようにしてください。
