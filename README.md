@@ -31,4 +31,4 @@ mainブランチを保護するために直接pushを行えない設定にして
 
 ### プルリクエストについて
 ある程度コードができたら適宜プルリクエストを出して自分のブランチをmainにマージするようにしてください。
-Codeのページで"Compare and Pull request"のボタンを押して
+Codeのページで"Compare and Pull request"のボタンを押していけば
