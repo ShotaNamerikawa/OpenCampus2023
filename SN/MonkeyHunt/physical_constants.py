@@ -1,0 +1,2 @@
+import scipy.constants
+g
