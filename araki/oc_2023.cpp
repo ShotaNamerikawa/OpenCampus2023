@@ -43,7 +43,7 @@ int main(){
     double y_monkey;
     double t_hit = 0;
     for(double t = 0;; t+=dt){
-        int ts = t/1000;
+        double ts = t/1000;
         x_bullet = v_bullet * cos(M_PI*ang_bullet/180) * ts;
         y_bullet = v_bullet * sin(M_PI*ang_bullet/180) * ts - (0.5 * G * ts*ts);
         y_monkey = h_monkey - 0.5 * G * ts*ts;
@@ -72,7 +72,7 @@ int main(){
         double V_x = m_bullet * vx_bullet / (m_bullet + m_monkey);
         double V_y = (m_bullet * vy_bullet + m_monkey * vy_monkey) / (m_bullet + m_monkey);
         for(double t = dt;; t+=dt){
-            int ts = t/1000;
+            double ts = t/1000;
             double X = V_x*ts;
             double Y = V_y*ts - 0.5*G*ts*ts;
             char name[100];
