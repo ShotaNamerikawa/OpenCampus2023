@@ -4,14 +4,14 @@ G = 9.80665
 # 初期値を入力する部分
 while True:
     try:
-        v_bullet = float(input("v_bullet = "))
-        ang_bullet = float(input("ang_bullet = "))
-        m_bullet = 0.01
-        h_monkey = float(input("h_monkey = "))
-        l_monkey = float(input("l_monkey = "))
-        m_monkey = 15
-        r_monkey = 0.8
-        dt = 0.01
+        v_bullet = float(input("v_bullet[m/s] = "))
+        ang_bullet = float(input("ang_bullet[度] = "))
+        m_bullet = float(input("m_bullet[kg] = "))
+        h_monkey = float(input("h_monkey[m] = "))
+        l_monkey = float(input("l_monkey[m] = "))
+        m_monkey = float(input("m_monkey[kg] = "))
+        r_monkey = float(input("r_monkey[m] = "))
+        dt = float(input("dt[s] = "))
         break
     except:
         print("エラー　もう一度入力\n")
