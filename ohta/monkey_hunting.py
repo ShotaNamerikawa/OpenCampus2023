@@ -6,12 +6,12 @@ while True:
     try:
         v_bullet = float(input("v_bullet = "))
         ang_bullet = float(input("ang_bullet = "))
-        m_bullet = 0.01
+        m_bullet = float(input("m_bullet = "))
         h_monkey = float(input("h_monkey = "))
         l_monkey = float(input("l_monkey = "))
-        m_monkey = 15
+        m_monkey = float(input("m_monkey = "))
         r_monkey = 0.8
-        dt = 0.01
+        dt = float(input("dt = "))
         break
     except:
         print("エラー　もう一度入力\n")
