@@ -2,8 +2,9 @@ import os
 import math
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib import patches
 from  matplotlib.animation import ArtistAnimation
-from matplotlib.offsetbox import OffsetImage, AnnotationBbox
+
 
 def read_file(path):
     """
@@ -26,42 +27,50 @@ def read_file(path):
     return data_list
 
 
-def make_animation(list):
+def make_animation(list, r_monkey, interval):
     """
     make gif-picture using matplotlib
-    """
-    fig, ax = plt.subplots()
-    artist_list = []
 
-    ax.set_xlabel("x")
-    ax.set_ylabel("y")
+    Attributes
+    ----------
+    r_monkey[m]: radius for monkey
+    interval[ms]: 
+    """
+    artist_list = []
     xlist = [b[1] for b in list] + [b[3] for b in list]
     ylist = [b[2] for b in list] + [b[3] for b in list]
     xmin, xmax = math.ceil(min(xlist)), math.ceil(max(xlist))
     ymin, ymax = math.ceil(min(ylist)), math.ceil(max(ylist))
+
+    fig, ax = plt.subplots()
+    ax.set_aspect('equal')
     plt.xlim(xmin, xmax)
     plt.ylim(ymin, ymax)
-
+    ax.set_xlabel("x")
+    ax.set_ylabel("y")
     flag_legend = True
+
+
     for i in range(len(list)):
         time = list[0]
         x_bullet, y_bullet = list[i][1], list[i][2]
         x_monkey, y_monkey = list[i][3], list[i][4]
         artist1 = ax.plot(x_bullet, y_bullet, color="blue", marker="o", markersize=5, label="bullet")
-        artist2 = ax.plot(x_monkey, y_monkey, color="red", marker="o", markersize=5, label="monkey")
-        
-        if abs(x_bullet - x_monkey)<0.5:
+        circle = patches.Circle(xy=(x_monkey, y_monkey), radius=r_monkey, color="red", label="monkey")
+        artist2 = ax.add_patch(circle)
+
+        if np.sqrt((x_bullet - x_monkey)**2 + (y_bullet - y_monkey)**2) < r_monkey:
             artist3 = ax.text(xmin+1, xmax-2.5, "HIT", size=15)
-            artist_list.append(artist1 + artist2 + [artist3])
+            artist_list.append(artist1 + [artist2] + [artist3])
         
         else:
-            artist_list.append(artist1 + artist2)
+            artist_list.append(artist1 + [artist2])
 
         if flag_legend == True:
             ax.legend()
             flag_legend = False
-        
-    anim = ArtistAnimation(fig, artist_list)
+
+    anim = ArtistAnimation(fig, artist_list, interval=interval)
     plt.grid()
     plt.show()
 
@@ -69,7 +78,7 @@ def make_animation(list):
 def main():
     path = os.path.abspath("monkey_hunting.txt")
     data_list = read_file(path)
-    make_animation(data_list)
+    make_animation(data_list, r_monkey=0.5, interval=100)
 
 
 main()
