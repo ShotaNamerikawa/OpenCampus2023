@@ -31,15 +31,10 @@ def make_list(t, x_bullet, y_bullet, x_monkey, y_monkey):
     return [t, x_bullet, y_bullet, x_monkey, y_monkey]
 
 
-def axis(list):
+def axis(xmin, xmax, ymin, ymax):
     """
     determine the axis from the calculation results
     """
-    xlist = [b[1] for b in list] + [b[3] for b in list]
-    ylist = [b[2] for b in list] + [b[3] for b in list]
-    xmin, xmax = math.ceil(min(xlist)), math.ceil(max(xlist))
-    ymin, ymax = math.ceil(min(ylist)), math.ceil(max(ylist))
-
     fig, ax = plt.subplots()
     ax.set_aspect('equal')
     plt.xlim(xmin, xmax)
@@ -59,7 +54,24 @@ def make_animation(list, interval, r_monkey):
     r_monkey[m]: radius for monkey
     interval[ms]: time it takes for one picture to be replaced
     """
-    fig, ax = axis(list)
+    flag_try = True
+    while flag_try:
+        xmin = input("Minimum value on x-axis[m]:")
+        xmax = input("Max value on x-axis[m]:")
+        ymin = input("Minimum value on y-axis[m]:")
+        ymax = input("Max value on y-axis[m]:")
+        
+        try:
+            float(xmin), float(xmax), float(ymin), float(ymax)
+            if xmin < xmax and ymin < ymax:
+                print("axis is determined correctly!")
+                flag_try = False
+            else:
+                print("type the numbers correctly again!")
+        except: 
+            print("type the numbers correctly again!")
+
+    fig, ax = axis(float(xmin), float(xmax), float(ymin), float(ymax))
     artist_list = []
     flag_legend = True
 
@@ -67,10 +79,12 @@ def make_animation(list, interval, r_monkey):
         time = list[0]
         x_bullet, y_bullet = list[i][1], list[i][2]
         x_monkey, y_monkey = list[i][3], list[i][4]
-        artist1 = ax.plot(x_bullet, y_bullet, color="blue", marker="o", markersize=5, label="bullet")
-        circle = patches.Circle(xy=(x_monkey, y_monkey), radius=r_monkey, color="red", label="monkey")
-        artist2 = ax.add_patch(circle)
-        artist_list.append(artist1 + [artist2])
+
+        circle_bullet = patches.Circle(xy=(x_bullet, y_bullet), radius=r_monkey/10, color="blue", label="bullet")
+        artist1 = ax.add_patch(circle_bullet)
+        circle_monkey = patches.Circle(xy=(x_monkey, y_monkey), radius=r_monkey, color="red", label="monkey")
+        artist2 = ax.add_patch(circle_monkey)
+        artist_list.append([artist1] + [artist2])
 
         if flag_legend == True:
             ax.legend()
@@ -87,6 +101,6 @@ def check():
     """
     path = os.path.abspath("monkey_hunting.txt")
     data_list = read_file(path)
-    make_animation(data_list, interval=300, r_monkey=0.5)
+    make_animation(data_list, interval=500, r_monkey=0.5)
 
 check()
