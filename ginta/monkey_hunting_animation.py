@@ -57,7 +57,7 @@ def make_animation(list, interval, r_monkey):
     Attributes
     ----------
     r_monkey[m]: radius for monkey
-    interval[ms]: 
+    interval[ms]: time it takes for one picture to be replaced
     """
     fig, ax = axis(list)
     artist_list = []
