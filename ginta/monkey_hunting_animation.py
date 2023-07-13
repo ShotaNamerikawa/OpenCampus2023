@@ -56,6 +56,7 @@ def make_animation(list, interval, r_monkey):
     """
     flag_try = True
     while flag_try:
+        print("determine the axis \nif you want default-axis, enter 'default' on all inputs")
         xmin = input("Minimum value on x-axis[m]:")
         xmax = input("Max value on x-axis[m]:")
         ymin = input("Minimum value on y-axis[m]:")
@@ -64,12 +65,21 @@ def make_animation(list, interval, r_monkey):
         try:
             float(xmin), float(xmax), float(ymin), float(ymax)
             if xmin < xmax and ymin < ymax:
-                print("axis is determined correctly!")
+                print("axis is determined correctly! \n")
                 flag_try = False
             else:
-                print("type the numbers correctly again!")
-        except: 
-            print("type the numbers correctly again!")
+                print("type the numbers correctly again! \n")
+        
+        except:
+            if xmin == "default": 
+                xlist = [d[1] for d in list] + [d[3] for d in list]
+                ylist = [d[2] for d in list] + [d[4] for d in list]
+                xmin, xmax = math.floor(min(xlist)-r_monkey), math.ceil(max(xlist)+r_monkey)
+                ymin, ymax = math.floor(min(ylist)-r_monkey), math.ceil(max(ylist)+r_monkey)
+                print("axis is determined correctly! \n")
+                flag_try = False
+            else:
+                print("type the numbers correctly again! \n")
 
     fig, ax = axis(float(xmin), float(xmax), float(ymin), float(ymax))
     artist_list = []
@@ -80,9 +90,9 @@ def make_animation(list, interval, r_monkey):
         x_bullet, y_bullet = list[i][1], list[i][2]
         x_monkey, y_monkey = list[i][3], list[i][4]
 
-        circle_bullet = patches.Circle(xy=(x_bullet, y_bullet), radius=r_monkey/10, color="blue", label="bullet")
+        circle_bullet = patches.Circle(xy=(x_bullet, y_bullet), radius=r_monkey/10, color="blue", label="bullet", alpha=0.5)
         artist1 = ax.add_patch(circle_bullet)
-        circle_monkey = patches.Circle(xy=(x_monkey, y_monkey), radius=r_monkey, color="red", label="monkey")
+        circle_monkey = patches.Circle(xy=(x_monkey, y_monkey), radius=r_monkey, color="red", label="monkey", alpha=0.5)
         artist2 = ax.add_patch(circle_monkey)
         artist_list.append([artist1] + [artist2])
 
