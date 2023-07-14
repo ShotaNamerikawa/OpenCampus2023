@@ -37,8 +37,7 @@ with open("monkey_hunting.txt", "w") as ofs:
             print("no hit")
             t_hit = -1
             break
-        elif x_monkey - x_bullet <= r_monkey and math.fabs(y_monkey - y_bullet) <= r_monkey:
-            print("hit")
+        elif ((x_monkey - x_bullet)**2 + (y_monkey - y_bullet)**2 < r_monkey**2 ):
             t_hit = t
             break
 
