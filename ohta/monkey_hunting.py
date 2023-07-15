@@ -19,7 +19,7 @@ while True:
 x_bullet = 0.0
 y_bullet = 0.0
 x_monkey = l_monkey
-y_monkey = 0.0
+y_monkey = h_monkey
 t_hit = 0.0
 
 
@@ -38,6 +38,7 @@ with open("monkey_hunting.txt", "w") as ofs:
             t_hit = -1
             break
         elif ((x_monkey - x_bullet)**2 + (y_monkey - y_bullet)**2 < r_monkey**2 ):
+            print("hit")
             t_hit = t
             break
 
