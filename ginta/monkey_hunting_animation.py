@@ -2,8 +2,9 @@ import os
 import math
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib import patches
 from  matplotlib.animation import ArtistAnimation
-from matplotlib.offsetbox import OffsetImage, AnnotationBbox
+
 
 def read_file(path):
     """
@@ -26,50 +27,90 @@ def read_file(path):
     return data_list
 
 
-def make_animation(list):
+def make_list(t, x_bullet, y_bullet, x_monkey, y_monkey):
+    return [t, x_bullet, y_bullet, x_monkey, y_monkey]
+
+
+def axis(xmin, xmax, ymin, ymax):
     """
-    make gif-picture using matplotlib
+    determine the axis from the calculation results
     """
     fig, ax = plt.subplots()
-    artist_list = []
-
-    ax.set_xlabel("x")
-    ax.set_ylabel("y")
-    xlist = [b[1] for b in list] + [b[3] for b in list]
-    ylist = [b[2] for b in list] + [b[3] for b in list]
-    xmin, xmax = math.ceil(min(xlist)), math.ceil(max(xlist))
-    ymin, ymax = math.ceil(min(ylist)), math.ceil(max(ylist))
+    ax.set_aspect('equal')
     plt.xlim(xmin, xmax)
     plt.ylim(ymin, ymax)
+    ax.set_xlabel("x")
+    ax.set_ylabel("y")
+    plt.grid()
+    return fig, ax
 
+
+def make_animation(list, interval, r_monkey):
+    """
+    make gif-picture using matplotlib
+
+    Attributes
+    ----------
+    r_monkey[m]: radius for monkey
+    interval[ms]: time it takes for one picture to be replaced
+    """
+    flag_try = True
+    while flag_try:
+        print("determine the axis \nif you want default-axis, enter 'default' on all inputs")
+        xmin = input("Minimum value on x-axis[m]:")
+        xmax = input("Max value on x-axis[m]:")
+        ymin = input("Minimum value on y-axis[m]:")
+        ymax = input("Max value on y-axis[m]:")
+        
+        try:
+            float(xmin), float(xmax), float(ymin), float(ymax)
+            if xmin < xmax and ymin < ymax:
+                print("axis is determined correctly! \n")
+                flag_try = False
+            else:
+                print("type the numbers correctly again! \n")
+        
+        except:
+            if xmin == "default": 
+                xlist = [d[1] for d in list] + [d[3] for d in list]
+                ylist = [d[2] for d in list] + [d[4] for d in list]
+                xmin, xmax = math.floor(min(xlist)-r_monkey), math.ceil(max(xlist)+r_monkey)
+                ymin, ymax = math.floor(min(ylist)-r_monkey), math.ceil(max(ylist)+r_monkey)
+                print("axis is determined correctly! \n")
+                flag_try = False
+            else:
+                print("type the numbers correctly again! \n")
+
+    fig, ax = axis(float(xmin), float(xmax), float(ymin), float(ymax))
+    artist_list = []
     flag_legend = True
+
     for i in range(len(list)):
         time = list[0]
         x_bullet, y_bullet = list[i][1], list[i][2]
         x_monkey, y_monkey = list[i][3], list[i][4]
-        artist1 = ax.plot(x_bullet, y_bullet, color="blue", marker="o", markersize=5, label="bullet")
-        artist2 = ax.plot(x_monkey, y_monkey, color="red", marker="o", markersize=5, label="monkey")
-        
-        if abs(x_bullet - x_monkey)<0.5:
-            artist3 = ax.text(xmin+1, xmax-2.5, "HIT", size=15)
-            artist_list.append(artist1 + artist2 + [artist3])
-        
-        else:
-            artist_list.append(artist1 + artist2)
+
+        circle_bullet = patches.Circle(xy=(x_bullet, y_bullet), radius=r_monkey/10, color="blue", label="bullet", alpha=0.5)
+        artist1 = ax.add_patch(circle_bullet)
+        circle_monkey = patches.Circle(xy=(x_monkey, y_monkey), radius=r_monkey, color="red", label="monkey", alpha=0.5)
+        artist2 = ax.add_patch(circle_monkey)
+        artist_list.append([artist1] + [artist2])
 
         if flag_legend == True:
             ax.legend()
             flag_legend = False
-        
-    anim = ArtistAnimation(fig, artist_list)
-    plt.grid()
+
+    anim = ArtistAnimation(fig, artist_list, interval=interval)
     plt.show()
 
 
-def main():
+
+def check():
+    """
+    check code
+    """
     path = os.path.abspath("monkey_hunting.txt")
     data_list = read_file(path)
-    make_animation(data_list)
+    make_animation(data_list, interval=500, r_monkey=0.5)
 
-
-main()
+check()
